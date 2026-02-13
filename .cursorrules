@@ -1,0 +1,104 @@
+# Baseline AWS — Project Conventions
+
+## Project Overview
+Baseline secure serverless web application on AWS, built with TypeScript, AWS CDK, and modern best practices.
+
+## Technology Stack
+- **Language**: TypeScript (strict mode)
+- **Runtime**: Node.js 22 LTS
+- **IaC**: AWS CDK v2 (TypeScript)
+- **Cloud**: AWS (serverless-first)
+- **Testing**: Jest
+- **Linting**: ESLint + Prettier
+
+## Architecture Principles
+- **Serverless-first**: Use Lambda, API Gateway, DynamoDB, S3, etc.
+- **Infrastructure as Code**: All resources defined in CDK, never manually created.
+- **Least privilege**: IAM roles and policies scoped to minimum required permissions.
+- **Security by default**: Encryption at rest and in transit, no public resources unless explicitly required.
+- **Multi-region awareness**: Design for us-east-1 primary, with consideration for DR.
+
+## Code Conventions
+
+### TypeScript
+- Use `strict: true` in tsconfig.json.
+- Prefer `const` over `let`; never use `var`.
+- Use explicit return types on all exported functions.
+- Use interfaces over type aliases for object shapes.
+- Use enums for fixed sets of values.
+- Prefer async/await over raw Promises.
+- Handle errors explicitly — no silent catches.
+
+### File & Directory Structure
+```
+baseline-aws/
+├── infra/              # CDK infrastructure code
+│   ├── bin/            # CDK app entry point
+│   ├── lib/            # CDK stacks and constructs
+│   └── test/           # Infrastructure tests
+├── src/                # Application source code
+│   ├── functions/      # Lambda function handlers
+│   ├── shared/         # Shared utilities and types
+│   └── types/          # TypeScript type definitions
+├── test/               # Application tests
+├── scripts/            # Build and deployment scripts
+└── docs/               # Documentation
+```
+
+### Naming Conventions
+- **Files**: kebab-case (e.g., `user-service.ts`)
+- **Classes/Interfaces**: PascalCase (e.g., `UserService`)
+- **Functions/Variables**: camelCase (e.g., `getUserById`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_RETRIES`)
+- **CDK Stack names**: PascalCase with `Stack` suffix (e.g., `ApiStack`)
+- **CDK Construct IDs**: PascalCase descriptive (e.g., `UserTable`)
+- **Lambda function names**: kebab-case with service prefix (e.g., `baseline-user-get`)
+- **DynamoDB tables**: PascalCase (e.g., `UserTable`)
+- **S3 buckets**: lowercase with hyphens, include account ID for uniqueness
+
+### CDK Conventions
+- One stack per logical service or bounded context.
+- Use L2/L3 constructs over L1 (Cfn) constructs when available.
+- Always define removal policies explicitly.
+- Tag all resources with: Project, Environment, Owner.
+- Use CDK context for environment-specific values.
+- Output important values (API URLs, table names) as CfnOutputs.
+
+### Lambda Conventions
+- One handler per file.
+- Keep handlers thin — delegate to service modules.
+- Use environment variables for configuration (table names, bucket names).
+- Return structured responses with proper HTTP status codes.
+- Log structured JSON via a shared logger utility.
+- Set reasonable timeout (30s default) and memory (256MB default).
+
+### Error Handling
+- Define custom error classes for domain-specific errors.
+- Always include error context in log messages.
+- Return user-friendly error messages in API responses.
+- Never expose internal error details to clients.
+
+### Testing
+- Write unit tests for all business logic.
+- Write integration tests for API endpoints.
+- Use CDK Assertions for infrastructure tests.
+- Aim for >80% code coverage.
+- Mock external services in unit tests.
+
+### Security
+- Never hardcode secrets — use AWS Secrets Manager or SSM Parameter Store.
+- Enable encryption at rest on all data stores.
+- Use HTTPS everywhere.
+- Validate and sanitize all input.
+- Set CORS policies explicitly and restrictively.
+
+### Git Conventions
+- Branch naming: `feature/`, `fix/`, `chore/` prefixes.
+- Commit messages: conventional commits format (e.g., `feat: add user API`).
+- Keep commits atomic and well-described.
+- Squash merge feature branches to main.
+
+## AWS Profile
+- **Development**: Use `--profile dev` (SSO-based, PowerUserAccess).
+- **Admin tasks**: Use AdministratorAccess permission set only when needed.
+- **Region**: us-east-1 (default).
