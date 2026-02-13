@@ -1,0 +1,28 @@
+{
+    "name": "@baseline-aws/infrastructure",
+    "version": "0.1.0",
+    "private": true,
+    "description": "CDK infrastructure stacks for baseline-aws",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "test": "jest",
+        "clean": "rm -rf dist cdk.out",
+        "lint": "eslint . --ext .ts",
+        "synth": "cdk synth --profile dev",
+        "deploy": "cdk deploy --all --profile dev --require-approval broadening",
+        "deploy:hotswap": "cdk deploy --all --profile dev --hotswap-fallback",
+        "destroy": "cdk destroy --all --profile dev",
+        "diff": "cdk diff --profile dev"
+    },
+    "devDependencies": {
+        "aws-cdk": "^2.0.0",
+        "aws-cdk-lib": "^2.0.0",
+        "constructs": "^10.0.0",
+        "typescript": "~5.9.0",
+        "@types/node": "^22.0.0",
+        "jest": "^29.0.0",
+        "ts-jest": "^29.0.0",
+        "@types/jest": "^29.0.0"
+    }
+}

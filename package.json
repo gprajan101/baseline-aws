@@ -1,0 +1,36 @@
+{
+  "name": "baseline-aws",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Baseline secure serverless web application on AWS",
+  "workspaces": [
+    "infrastructure",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present",
+
+    "build:infra": "npm run build -w infrastructure",
+    "build:backend": "npm run build -w backend",
+    "build:frontend": "npm run build -w frontend",
+
+    "test:infra": "npm run test -w infrastructure",
+    "test:backend": "npm run test -w backend",
+    "test:frontend": "npm run test -w frontend",
+
+    "deploy": "npm run deploy -w infrastructure",
+    "deploy:hotswap": "npm run deploy:hotswap -w infrastructure",
+    "destroy": "npm run destroy -w infrastructure",
+    "diff": "npm run diff -w infrastructure",
+    "synth": "npm run synth -w infrastructure"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "author": "Prasanna Rajan",
+  "license": "MIT"
+}
