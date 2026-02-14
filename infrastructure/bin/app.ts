@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
+import { AuthStack } from '../lib/auth-stack';
 
 const app = new cdk.App();
 
-// Stacks will be added here as the application grows.
-// Example:
-// new ApiStack(app, 'BaselineApiStack', {
-//   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-// });
+new AuthStack(app, 'BaselineAuthStack', {
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION,
+    },
+    description: 'Baseline AWS — Cognito authentication stack',
+    // productionDomain: 'https://app.example.com',  // Uncomment when ready
+});
 
 app.synth();
