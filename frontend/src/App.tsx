@@ -1,18 +1,21 @@
-import { Routes, Route } from 'react-router-dom';
-
-function Home() {
-    return (
-        <div>
-            <h1>Baseline AWS</h1>
-            <p>Secure serverless web application</p>
-        </div>
-    );
-}
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { LoginPage } from './pages/LoginPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 export default function App() {
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+                path="/dashboard"
+                element={
+                    <ProtectedRoute>
+                        <DashboardPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
     );
 }
