@@ -26,7 +26,7 @@ const databaseStack = new DatabaseStack(app, 'BaselineDatabaseStack', {
     description: 'Baseline AWS — DynamoDB database stack',
 });
 
-new ApiStack(app, 'BaselineApiStack', {
+const apiStack = new ApiStack(app, 'BaselineApiStack', {
     ...envConfig,
     description: 'Baseline AWS — API Gateway and Lambda stack',
     userPool: authStack.userPool,
@@ -34,10 +34,12 @@ new ApiStack(app, 'BaselineApiStack', {
     table: databaseStack.table,
 });
 
-new FrontendStack(app, 'BaselineFrontendStack', {
+const frontendStack = new FrontendStack(app, 'BaselineFrontendStack', {
     ...envConfig,
     description: 'Baseline AWS — Frontend S3 + CloudFront hosting',
 });
 
-app.synth();
+// Explicit dependency: Frontend deploys after API is ready
+frontendStack.addDependency(apiStack);
 
+app.synth();
