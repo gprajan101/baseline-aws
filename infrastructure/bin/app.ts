@@ -4,6 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { AuthStack } from '../lib/auth-stack';
 import { DatabaseStack } from '../lib/database-stack';
 import { ApiStack } from '../lib/api-stack';
+import { FrontendStack } from '../lib/frontend-stack';
 
 const app = new cdk.App();
 
@@ -33,4 +34,10 @@ new ApiStack(app, 'BaselineApiStack', {
     table: databaseStack.table,
 });
 
+new FrontendStack(app, 'BaselineFrontendStack', {
+    ...envConfig,
+    description: 'Baseline AWS — Frontend S3 + CloudFront hosting',
+});
+
 app.synth();
+
